@@ -10,6 +10,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldBeUpperCase
 import io.kotest.matchers.string.shouldNotContain
+import java.util.*
 import kotlin.system.measureTimeMillis
 
 class PerformanceTest : FunSpec({
@@ -28,6 +29,8 @@ class PerformanceTest : FunSpec({
             println("### legacyWithKotlinRandom       = ${measureTimeMillis(legacyWithKotlinRandomGenerator, it)} ms")
             println("### uuid                         = ${measureTimeMillis(uuidGenerator, it)} ms")
             println("### uuidWithSequence             = ${measureTimeMillis(uuidWithSequence, it)} ms")
+            println("### justUUID                     = ${measureTimeMillis2(it)} ms")
+            println("### justUUIDWithSequence         = ${measureTimeMillis3(it)} ms")
             println()
         }
     }
@@ -42,6 +45,33 @@ fun measureTimeMillis(generator: CodeGenerator, size: Long): Long {
     codes.size shouldBe size
     codes.first() shouldNotContain "-"
     codes.first().shouldBeUpperCase()
+
+//    println(codes)
+    return elapsed
+}
+
+fun measureTimeMillis2(size: Long): Long {
+    var codes: List<UUID>
+    val elapsed = measureTimeMillis {
+        codes = (1..size)
+            .map { UUID.randomUUID() }
+    }
+
+    codes.size shouldBe size
+
+//    println(codes)
+    return elapsed
+}
+
+fun measureTimeMillis3(size: Long): Long {
+    var codes: List<UUID>
+    val elapsed = measureTimeMillis {
+        codes = (1..size).asSequence()
+            .map { UUID.randomUUID() }
+            .toList()
+    }
+
+    codes.size shouldBe size
 
 //    println(codes)
     return elapsed
