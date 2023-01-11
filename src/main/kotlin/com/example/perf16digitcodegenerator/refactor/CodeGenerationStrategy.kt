@@ -1,5 +1,5 @@
 package com.example.perf16digitcodegenerator.refactor
 
 interface CodeGenerationStrategy {
-    fun generate(count: Long): Set<String>
+    fun generate(size: Long): Set<String>
 }

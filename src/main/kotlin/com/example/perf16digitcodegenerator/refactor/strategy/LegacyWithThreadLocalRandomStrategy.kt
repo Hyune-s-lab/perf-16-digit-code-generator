@@ -4,7 +4,7 @@ import com.example.perf16digitcodegenerator.refactor.CodeGenerationStrategy
 import java.util.concurrent.ThreadLocalRandom
 
 class LegacyWithThreadLocalRandomStrategy : CodeGenerationStrategy {
-    override fun generate(count: Long): Set<String> {
+    override fun generate(size: Long): Set<String> {
         val codes = mutableSetOf<String>()
         val code = StringBuilder()
         do {
@@ -15,7 +15,7 @@ class LegacyWithThreadLocalRandomStrategy : CodeGenerationStrategy {
             }
             codes.add(code.toString())
             code.clear()
-        } while (!isGeneratedCountEnough(codes, count))
+        } while (!isGeneratedCountEnough(codes, size))
 
         return codes
     }
